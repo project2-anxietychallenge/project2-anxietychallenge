@@ -175,6 +175,9 @@ a:hover {
     margin: 0px,auto;
     border: 0px;
   }
+  .anxietyImg{
+  	margin-top:15px;
+  }
 } /*end of 991px*/
 
 
@@ -210,11 +213,7 @@ a:hover {
     padding-bottom: 7px;
     padding-top: 7px;
   }
-  .banner {
-    padding: 0px;
-    margin: 0, auto;
-  }
-  .promo {
+    .promo {
     height: auto;
     width: 100%;
     font-size: 13px;
@@ -230,5 +229,8 @@ a:hover {
  }
  .h3 {
    font-size: 15px;
+ }
+ .anxietyImg{
+   margin-top:15px;
  }
 } /*end of 767*/
