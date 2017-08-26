@@ -5,13 +5,15 @@ var db = require("../models/");
 var path = require("path");
 var body = require("body-parser");
 
+var new_user;
+
 router.post("/api/addactivity/:id", function(req, res) {
     db.Activity.create({
         QuestionId: req.params.id,
         journal_entry: 'blank',
         UserId: req.body.UserId
     }).then(function() {
-        res.redirect("/api/generatequestions");
+        res.redirect("/api/generatequestions/" + new_user.guid);
     });
 });
 
@@ -39,7 +41,7 @@ router.get("/api/generatequestions/:new_user?", function(req, res){
 });
 
 router.post("/user/check", function(req, res) {
-    var new_user = req.body
+    new_user = req.body
     console.log("------------------------------");
     console.log('this is the request body guid' + new_user.guid);
     //checking to see if new user is already in user table
@@ -88,7 +90,6 @@ router.get("/api/getuserprogress", function(req, res) {
                 },
                 include: [[sequelize.fn('COUNT', sequelize.col('QuestionId')), 'completedCount']]
             });
-    
     })
     });
 });
