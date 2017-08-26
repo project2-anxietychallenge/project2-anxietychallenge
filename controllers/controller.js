@@ -22,7 +22,7 @@ router.get("/", function(req, res){
 
 router.get("/api/generatequestions/:new_user?", function(req, res){
     var hbsObject = {};
-    db.Question.sequelize.query('Select * from Questions WHERE id NOT IN (SELECT a.id FROM activities a  WHERE a.userid = (SELECT u.id FROM users u WHERE u.google_id = ? ))',
+    db.Question.sequelize.query('Select * from Questions WHERE id NOT IN (SELECT a.id FROM Activities a  WHERE a.userid = (SELECT u.id FROM Users u WHERE u.google_id = ? ))',
        {replacements: [req.params.new_user], type: db.Question.sequelize.QueryTypes.SELECT})
     .then(function(data){
         hbsObject.questions = data;
