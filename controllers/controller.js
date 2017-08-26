@@ -6,42 +6,42 @@ var path = require("path");
 var body = require("body-parser");
 
 router.post("/api/addactivity/:id", function(req, res) {
-	db.Activity.create({
-		QuestionId: req.params.id,
-		journal_entry: 'blank',
-		UserId: req.body.UserId
-	}).then(function() {
-		res.redirect("/api/generatequestions");
-	});
+    db.Activity.create({
+        QuestionId: req.params.id,
+        journal_entry: 'blank',
+        UserId: req.body.UserId
+    }).then(function() {
+        res.redirect("/api/generatequestions");
+    });
 });
 
 
-	router.get("/", function(req, res){
-		res.render("index");
-	});
+router.get("/", function(req, res){
+    res.render("index");
+});
 
-	router.get("/api/generatequestions/:new_user?", function(req, res){
-		var hbsObject = {};
-		db.Question.sequelize.query('Select * from Questions WHERE id NOT IN (SELECT id FROM Activities)',
-			{type: db.Question.sequelize.QueryTypes.SELECT})
-		.then(function(data){
-			hbsObject.questions = data;
-			db.Activity.findAll({
-				where: db.Question.id = db.Activity.QuestionId,
-				include: [db.Question]
-			})
-			.then(function(data){
-				hbsObject.completedQuestions = data;
-				hbsObject.userId = '1';
-				res.render("challenges", hbsObject);
-			});
-		});
-	});
+router.get("/api/generatequestions/:new_user?", function(req, res){
+    var hbsObject = {};
+    db.Question.sequelize.query('Select * from Questions WHERE id NOT IN (SELECT a.id FROM activities a  WHERE a.userid = (SELECT u.id FROM users u WHERE u.google_id = ? ))',
+       {replacements: [req.params.new_user], type: db.Question.sequelize.QueryTypes.SELECT})
+    .then(function(data){
+        hbsObject.questions = data;
+        db.Activity.findAll({
+            where: db.Question.id = db.Activity.QuestionId,
+            include: [db.Question]
+        })
+        .then(function(data){
+            hbsObject.completedQuestions = data;
+            hbsObject.userId = '1';
+            res.render("challenges", hbsObject);
+        });
+    });
+});
 
 router.post("/user/check", function(req, res) {
-    var new_user = '1223'
+    var new_user = req.body
     console.log("------------------------------");
-    console.log('this is the request body guid' + new_user);
+    console.log('this is the request body guid' + new_user.guid);
     //checking to see if new user is already in user table
     db.User.findOne({
         where: {
@@ -60,7 +60,7 @@ router.post("/user/check", function(req, res) {
                 console.log("successfully wrote new user to database");
         // redirect stuff still not working
         console.log(result);
-      });
+    });
         } else {
             console.log('working')
             // console.log(data.dataValues);
@@ -69,35 +69,33 @@ router.post("/user/check", function(req, res) {
       //     user_data: data.dataValues
       // });
 
-    }
-  });
+  }
+});
 });
 
-router.get("/user/check", function(req, res) {
-    res.redirect("/check/")
-});
-	router.get("/api/getuserprogress", function(req, res) {
-		var hbsObject = {};
-		db.User.findOne({
-			where: {
-				google_id:guid
-			},
-			include: id
-			.then(function(data) {
-				db.Activity.findAll({
-					where: {
-						UserId: data
-					},
-					include: [[sequelize.fn('COUNT', sequelize.col('QuestionId')), 'completedCount']]
-				});
+
+router.get("/api/getuserprogress", function(req, res) {
+    var hbsObject = {};
+    db.User.findOne({
+        where: {
+            google_id:guid
+        },
+        include: id
+        .then(function(data) {
+            db.Activity.findAll({
+                where: {
+                    UserId: data
+                },
+                include: [[sequelize.fn('COUNT', sequelize.col('QuestionId')), 'completedCount']]
+            });
         // .then(function(data) {
         //   hbsObject.completedQuestions = data;
         //   hbsObject.userId = '1';
         //   res.render("challenges", hbsObject);
         // });
-      })
-		})
-	});
+    })
+    })
+});
 
 
-	module.exports = router;
+module.exports = router;
