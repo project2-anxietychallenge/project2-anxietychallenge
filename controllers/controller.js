@@ -88,13 +88,9 @@ router.get("/api/getuserprogress", function(req, res) {
                 },
                 include: [[sequelize.fn('COUNT', sequelize.col('QuestionId')), 'completedCount']]
             });
-        // .then(function(data) {
-        //   hbsObject.completedQuestions = data;
-        //   hbsObject.userId = '1';
-        //   res.render("challenges", hbsObject);
-        // });
+    
     })
-    })
+    });
 });
 
 
