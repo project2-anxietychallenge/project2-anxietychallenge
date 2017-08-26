@@ -120,18 +120,18 @@ h3 {
   }
 
   .btn-challenge {
-  	background-color: #DC4A38;
+  background-color: #DC4A38;
 	border-color: #DC4A38;
   border: 1px solid;
-  border-radius: 25px;
+  border-radius: 8px;
 	width: 200px;
 	height: 50px;
-    font-size: 16px;
+  font-size: 16px;
     /*margin: 5px;*/
-    text-align: center;
-    font-family: "SourceSansPro", Helvetica, Arial, sans-serif;
-    color: white;
-    float: center;
+  text-align: center;
+  font-family: "SourceSansPro", Helvetica, Arial, sans-serif;
+  color: white;
+  float: center;
   }
 .btn-warning {
   text-align: center;
@@ -214,8 +214,11 @@ a:hover {
     width: 100%;
     height: auto;
     font-size: 13px;
+    border: 1px solid;
+    border-radius: 8px;
     padding-bottom: 7px;
     padding-top: 7px;
+
   }
     .promo {
     height: auto;
